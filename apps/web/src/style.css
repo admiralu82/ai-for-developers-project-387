@@ -1,0 +1,49 @@
+:root {
+  /* Warm color palette */
+  --bg-cream: #F7F4EF;
+  --surface-light: #FBF9F5;
+  --surface-white: #FFFFFF;
+  --border-hairline: #E7E1D7;
+  --text-ink: #1F2421;
+  --text-muted: #5C635D;
+  --charcoal: #1F2421;
+  --accent-terracotta: #C4612F;
+  --accent-hover: #A94E22;
+  --accent-tint: #F2E3D6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 300;
+  background: var(--bg-cream);
+  color: var(--text-ink);
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  font-family: 'Fraunces', 'Georgia', serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  outline: none;
+}
+
+#app {
+  min-height: 100vh;
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "eventTypeId": "6f996470-1f35-4ccc-90c7-bc76367795f0",
+    "title": "Консультация",
+    "durationMinutes": 60,
+    "color": "#C4612F"
+  },
+  {
+    "eventTypeId": "d443fe36-3eda-4448-9b7f-71417b1472bc",
+    "title": "Короткая встреча",
+    "durationMinutes": 30,
+    "color": "#8B7355"
+  },
+  {
+    "eventTypeId": "25519aa4-4e1a-4e2a-92ae-44f5bf89c763",
+    "title": "Мастер-класс",
+    "durationMinutes": 120,
+    "color": "#A0826D"
+  },
+  {
+    "eventTypeId": "adeef2bc-05ca-4b00-a7e4-df40d81404a6",
+    "title": "Собеседование",
+    "durationMinutes": 45,
+    "color": "#6B5744"
+  }
+]

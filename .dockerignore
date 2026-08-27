@@ -1,0 +1,14 @@
+.git
+.github
+node_modules
+tests
+test-results
+playwright-report
+tsp-output
+apps/web/dist
+apps/api/db.json
+apps/api/event.json
+.env
+.env.*
+*.log
+_AI_.txt
