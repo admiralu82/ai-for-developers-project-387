@@ -178,6 +178,23 @@ app.put('/api/event-types/:eventId', async (req, res) => {
 app.delete('/api/event-types/:eventId', async (req, res) => {
   try {
     const { eventId } = req.params;
+    const eventType = await getEventTypeById(eventId);
+
+    if (!eventType) {
+      return res.status(400).json({ 
+        code: 'NOT_FOUND', 
+        message: 'Event type not found' 
+      });
+    }
+
+    const events = await getEvents();
+    if (events.some(event => event.eventTypeId === eventId)) {
+      return res.status(409).json({ 
+        code: 'EVENT_TYPE_IN_USE', 
+        message: 'Cannot delete event type with existing bookings' 
+      });
+    }
+
     const deleted = await deleteEventType(eventId);
 
     if (!deleted) {
@@ -291,8 +308,10 @@ app.post('/api/events', async (req, res) => {
     // Check for overlaps
     const events = await getEvents();
     for (const existingEvent of events) {
-      const existingStart = parseDate(existingEvent.startTime);
       const existingEventType = await getEventTypeById(existingEvent.eventTypeId);
+      if (!existingEventType) continue;
+
+      const existingStart = parseDate(existingEvent.startTime);
       const existingEnd = addMinutes(existingStart, existingEventType.durationMinutes);
 
       if (hasTimeOverlap(start, end, existingStart, existingEnd)) {
@@ -467,8 +486,10 @@ app.get('/api/available-slots', async (req, res) => {
         // Check for conflicts
         let available = true;
         for (const event of dayEvents) {
-          const eventStart = parseDate(event.startTime);
           const eventEventType = await getEventTypeById(event.eventTypeId);
+          if (!eventEventType) continue;
+
+          const eventStart = parseDate(event.startTime);
           const eventEnd = addMinutes(eventStart, eventEventType.durationMinutes);
 
           if (hasTimeOverlap(slotStart, slotEnd, eventStart, eventEnd)) {
