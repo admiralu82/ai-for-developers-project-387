@@ -27,24 +27,24 @@ jobs:
       pull-requests: write
       issues: write
     steps:
-    #   - name: Checkout repository
-    #     uses: actions/checkout@v6
-    #     with:
-    #       persist-credentials: false
-      - name: Run Lighthouse
-        run: |
-          npx lighthouse https://ai-for-developers-project-386-gsc2.onrender.com \
-          --output=json \
-          --output-path=./lighthouse-report.json \
-          --chrome-flags="--headless"
-      - name: Analyze with OpenCode
-        uses: anomalyco/opencode/github@latest
-        env:
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-        with:
-          model: ${{ inputs.model }}
-          prompt: ${{ inputs.prompt }}
-
+        - name: Checkout repository
+          uses: actions/checkout@v6
+          with:
+            persist-credentials: false
+        - name: Run Lighthouse
+          run: |
+            npx lighthouse https://ai-for-developers-project-386-gsc2.onrender.com \
+            --output=json \
+            --output-path=./lighthouse-report.json \
+            --chrome-flags="--headless"
+        - name: Analyze with OpenCode
+          uses: anomalyco/opencode/github@latest
+          env:
+            OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          with:
+            model: ${{ inputs.model }}
+            prompt: ${{ inputs.prompt }}
+             
 
 
 
