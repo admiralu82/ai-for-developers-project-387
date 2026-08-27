@@ -1,0 +1,60 @@
+name: Manual Page-speed measure
+on:
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: "Task page-speed OpenCode"
+        required: false
+        default: |
+           Read ./lighthouse-report.json.
+           Compare LCP, CLS, INP with the values in
+           docs/performance-baseline.md.
+           For metrics that degraded by more than 10%,
+           identify likely culprits in recent commits and
+           create an issue with specific recommendations.
+        type: string
+      model:
+        description: "Model to use"
+        required: false
+        default: "opencode-go/qwen3.8-max"
+        type: string
+jobs:
+  opencode:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+    #   - name: Checkout repository
+    #     uses: actions/checkout@v6
+    #     with:
+    #       persist-credentials: false
+      - name: Run Lighthouse
+        run: |
+          npx lighthouse https://ai-for-developers-project-386-gsc2.onrender.com \
+          --output=json \
+          --output-path=./lighthouse-report.json \
+          --chrome-flags="--headless"
+      - name: Analyze with OpenCode
+        uses: anomalyco/opencode/github@latest
+        env:
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+        with:
+          model: ${{ inputs.model }}
+          prompt: ${{ inputs.prompt }}
+
+
+
+
+# - name: Analyze with OpenCode
+#   uses: anomalyco/opencode/github@latest
+#   with:
+#     prompt: |
+#       Read ./lighthouse-report.json.
+#       Compare LCP, CLS, INP with the values in
+#       docs/performance-baseline.md.
+#       For metrics that degraded by more than 10%,
+#       identify likely culprits in recent commits and
+#       create an issue with specific recommendations.
