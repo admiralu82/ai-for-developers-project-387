@@ -26,7 +26,7 @@ const maxDate = computed(() => {
   const max = new Date(Date.UTC(
     today.getUTCFullYear(),
     today.getUTCMonth(),
-    today.getUTCDate() + 14
+    today.getUTCDate() + 14  // TODO: лимит 14 дней захардкожен в BookingPage.vue:29 (нет GET /api/config)
   ));
   return toDateInputValue(max);
 });
