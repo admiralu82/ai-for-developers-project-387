@@ -27,7 +27,7 @@ export const api = {
     });
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));
-      throw new Error(error.message || 'Failed to delete event type');
+      throw new Error(error.message || 'Не удалось удалить тип события');
     }
   },
 

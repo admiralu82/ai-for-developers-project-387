@@ -183,7 +183,7 @@ app.delete('/api/event-types/:eventId', async (req, res) => {
     if (!eventType) {
       return res.status(400).json({ 
         code: 'NOT_FOUND', 
-        message: 'Event type not found' 
+        message: 'Тип события не найден' 
       });
     }
 
@@ -191,7 +191,7 @@ app.delete('/api/event-types/:eventId', async (req, res) => {
     if (events.some(event => event.eventTypeId === eventId)) {
       return res.status(409).json({ 
         code: 'EVENT_TYPE_IN_USE', 
-        message: 'Cannot delete event type with existing bookings' 
+        message: 'Нельзя удалить тип события с существующими бронями' 
       });
     }
 
