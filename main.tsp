@@ -107,6 +107,10 @@ interface EventTypes {
     | {
         @statusCode statusCode: 400;
         @body error: ErrorResponse;
+      }
+    | {
+        @statusCode statusCode: 409;
+        @body error: ErrorResponse;
       };
 }
 

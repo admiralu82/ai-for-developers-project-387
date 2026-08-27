@@ -74,7 +74,7 @@ async function deleteEventType(eventTypeId) {
     await api.deleteEventType(eventTypeId);
     await loadEventTypes();
   } catch (err) {
-    error.value = 'Не удалось удалить тип события';
+    error.value = err.message || 'Не удалось удалить тип события';
   }
 }
 
