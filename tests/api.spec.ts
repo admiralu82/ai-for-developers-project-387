@@ -198,4 +198,54 @@ test.describe('4.6 API-проверки (P0)', () => {
     });
     expect(boundary.status()).toBe(201);
   });
+
+  test('API-11: удаление типа события с бронями запрещено', async ({ request }) => {
+    const dateISO = projectBookingDate();
+    const comment = 'Автотест API-11';
+    await clearBookingsByComment(request, comment);
+
+    const createType = await request.post(`${API_BASE}/event-types`, {
+      data: {
+        title: 'Временный тип',
+        durationMinutes: 60,
+        color: '#D4A574',
+      },
+    });
+    expect(createType.status()).toBe(201);
+    const { eventTypeId } = await createType.json();
+
+    try {
+      await createBookingViaAPI(request, {
+        eventTypeId,
+        dateISO,
+        timeHHMM: '16:00',
+        comment,
+      });
+
+      const blocked = await request.delete(
+        `${API_BASE}/event-types/${eventTypeId}`
+      );
+      expect(blocked.status()).toBe(409);
+      const error = await blocked.json();
+      expect(error.code).toBe('EVENT_TYPE_IN_USE');
+
+      const stillExists = await request.get(
+        `${API_BASE}/event-types/${eventTypeId}`
+      );
+      expect(stillExists.status()).toBe(200);
+
+      await clearBookingsByComment(request, comment);
+
+      const deleted = await request.delete(
+        `${API_BASE}/event-types/${eventTypeId}`
+      );
+      expect(deleted.status()).toBe(204);
+
+      const gone = await request.get(`${API_BASE}/event-types/${eventTypeId}`);
+      expect(gone.status()).toBe(404);
+    } finally {
+      await clearBookingsByComment(request, comment);
+      await request.delete(`${API_BASE}/event-types/${eventTypeId}`);
+    }
+  });
 });
